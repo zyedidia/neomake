@@ -60,7 +60,7 @@ endfunction
 "This is for LDMD and dmd only.
 function! s:DmdCompStyleMaker(args) abort
     return {
-        \ 'args': args,
+        \ 'args': a:args,
         \ 'errorformat':
         \     '%f(%l\,%c): %trror: %m,' .
         \     '%f(%l): %trror: %m,' .
