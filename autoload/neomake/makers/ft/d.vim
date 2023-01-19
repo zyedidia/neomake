@@ -3,7 +3,7 @@
 function! neomake#makers#ft#d#EnabledMakers() abort
     " dmd, ldmd, and gdmd all share a common CLI.
     " Ordered in efficiency of compiler
-    for m in ['dmd', 'ldmd', 'gdmd']
+    for m in ['comp', 'dmd', 'ldmd', 'gdmd']
         if executable(m)
             return [m]
         endif
@@ -54,6 +54,26 @@ function! s:DmdStyleMaker(args) abort
         \     '%f(%l\,%c): Deprecation: %m,' .
         \     '%f(%l): Deprecation: %m,',
         \ }
+endfunction
+
+"GDMD does not adhere to dmd's flags or output, but to GCC's.
+"This is for LDMD and dmd only.
+function! s:DmdCompStyleMaker(args) abort
+    return {
+        \ 'args': args,
+        \ 'errorformat':
+        \     '%f(%l\,%c): %trror: %m,' .
+        \     '%f(%l): %trror: %m,' .
+        \     '%f(%l\,%c): %tarning: %m,' .
+        \     '%f(%l): %tarning: %m,' .
+        \     '%f(%l\,%c): Deprecation: %m,' .
+        \     '%f(%l): Deprecation: %m,',
+        \ }
+endfunction
+
+function! neomake#makers#ft#d#comp() abort
+    let args = []
+    return s:DmdCompStyleMaker(args)
 endfunction
 
 function! neomake#makers#ft#d#dmd() abort
